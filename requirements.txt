@@ -1,0 +1,16 @@
+pandas
+psycopg2-binary
+requests
+bs4
+numpy
+pandas
+matplotlib
+scikit-image
+scipy
+numba
+argparse
+opencv-python
+PyWavelets
+lxml
+sqlalchemy
+opencv-python

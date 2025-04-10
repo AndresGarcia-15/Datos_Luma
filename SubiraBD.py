@@ -1,0 +1,41 @@
+from datetime import datetime
+from sqlalchemy import text
+import pandas as pd
+from sqlalchemy import create_engine
+import os
+from configparser import ConfigParser
+
+
+class SubirDB:
+
+    def __init__(self):
+        self.engine = create_engine('sqlite:////home/pipe15200/LumaExecutable/LumaWeb/prisma/DATA.db') #cambia la ruta a la base de datos
+
+    def max_date(self, table):
+        query = f'SELECT MAX(date) AS max FROM {table};'
+        Max_date = pd.read_sql_query(query, self.engine)['max'][0]
+        return Max_date
+
+    def create_tables(self):
+        year = str(datetime.now().year) 
+
+        tables = [
+            'eit171', 'eit195', 'eit284', 'eit304', 'hmiigr', 'hmimag'
+        ]
+        
+        for table in tables:
+            # Leer el DataFrame desde el archivo CSV
+            df_csv = pd.read_csv(f'./DATA/output_{year}_{table}.csv')
+            
+            # Consultar la última fecha en la base de datos
+            last_date_query = f'SELECT MAX(date) AS max FROM {table};'
+            last_date = pd.read_sql_query(last_date_query, self.engine)['max'][0]
+
+            # Filtrar solo las filas con fechas mayores a la última fecha en la base de datos
+            df_new_data = df_csv[df_csv['date'] > last_date]
+
+            if not df_new_data.empty:
+                # Si hay nuevas fechas, guardar en la base de datos
+                df_new_data.to_sql(table, self.engine, if_exists='append', index=False)
+                print(f'Se agregaron {len(df_new_data)} nuevas filas a la tabla {table}.')
+
