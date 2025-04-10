@@ -1,30 +1,34 @@
 #!/bin/bash
-set -e  # Detener el script si ocurre un error
+set -e  # Detiene el script si ocurre un error
 
 # Configurar la localización
 export LANG=en_US.UTF-8
 
 # Navegar al directorio del proyecto
-cd /home/pipe15200/LumaExecutable || { echo "Error: No se pudo acceder a /home/pipe15200/LumaExecutable"; exit 1; }
+cd /home/ubuntu/Lumaweb/Datos_Luma || { echo "❌ Error: No se pudo acceder a /home/ubuntu/Lumaweb/Datos_Luma"; exit 1; }
 
-# Verificar si el entorno virtual existe antes de activarlo
+# Limpiar el entorno virtual anterior (por si tenía problemas de permisos)
 if [ -d ".venv" ]; then
-    echo "Activando entorno virtual existente..."
-    source .venv/bin/activate
-else
-    echo "No se encontró el entorno virtual .venv. Creándolo..."
-    python3 -m venv .venv
-    source .venv/bin/activate
+    echo "🧹 Eliminando entorno virtual anterior con permisos incorrectos..."
+    rm -rf .venv
 fi
 
-# Asegurar que pip esté actualizado
+# Crear entorno virtual nuevo
+echo "📦 Creando entorno virtual nuevo..."
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Actualizar pip
+echo "⬆️  Actualizando pip..."
 pip install --upgrade pip
 
-# Instalar los requisitos
+# Instalar requerimientos
+echo "📥 Instalando dependencias..."
 if ! pip install -r requirements.txt; then
     echo "❌ Error al instalar los paquetes. Revisa los permisos o el contenido del archivo requirements.txt."
     exit 1
 fi
-sleep 1
-# Ejecutar el script en Python
+
+# Ejecutar el script principal
+echo "🚀 Ejecutando geturls.py..."
 exec python3 geturls.py
