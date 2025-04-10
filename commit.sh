@@ -2,7 +2,7 @@
 # filepath: c:/Users/adria/Desktop/Luma_api_sunspot/soho/commit.sh
 
 # Cambiar al directorio del repositorio que se va a actualizar
-cd /home/pipe15200/LumaExecutable/LumaWeb || exit
+cd /home/ubuntu/Lumaweb/Web || exit
 
 # Obtener la fecha y hora actual
 datetime=$(date +"%Y%m%d%H%M")

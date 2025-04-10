@@ -9,7 +9,7 @@ from configparser import ConfigParser
 class SubirDB:
 
     def __init__(self):
-        self.engine = create_engine('sqlite:////home/pipe15200/LumaExecutable/LumaWeb/prisma/DATA.db') #cambia la ruta a la base de datos
+        self.engine = create_engine('sqlite:////home/ubuntu/Lumaweb/Web/prisma/DATA.db') #cambia la ruta a la base de datos
 
     def max_date(self, table):
         query = f'SELECT MAX(date) AS max FROM {table};'
